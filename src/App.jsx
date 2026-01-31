@@ -118,6 +118,9 @@ function Flow() {
     dependencies: new Set(), // Nodes the active node depends on
     dependants: new Set(),   // Nodes that depend on the active node
   });
+  
+  // Toggle for showing the help/legend panel
+  const [showLegend, setShowLegend] = useState(false);
 
   // Save purchased nodes to localStorage whenever they change
   useEffect(() => {
@@ -337,18 +340,29 @@ function Flow() {
           <Controls showInteractive={false} />
         </ReactFlow>
 
-        {/* Legend for dependency visualization */}
-        <div className="dependency-legend">
-          <h4>Dependencies</h4>
-          <div className="legend-item">
-            <div className="legend-color dependency"></div>
-            <span>Requires (depends on)</span>
+        {/* Help button and legend panel */}
+        <button
+          onClick={() => setShowLegend(!showLegend)}
+          className="help-button"
+          title="Show legend"
+        >
+          ?
+        </button>
+        
+        {showLegend && (
+          <div className="dependency-legend">
+            <h4>Dependencies</h4>
+            <div className="legend-item">
+              <div className="legend-color dependency"></div>
+              <span>Requires (depends on)</span>
+            </div>
+            <div className="legend-item">
+              <div className="legend-color dependant"></div>
+              <span>Unlocks (dependant)</span>
+            </div>
+            <p className="legend-hint">Hover or click a node to see its dependencies</p>
           </div>
-          <div className="legend-item">
-            <div className="legend-color dependant"></div>
-            <span>Unlocks (dependant)</span>
-          </div>
-        </div>
+        )}
 
         {/* DEBUG: Reset button - remove this block when not needed */}
         <button

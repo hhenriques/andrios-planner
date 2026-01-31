@@ -83,10 +83,37 @@ body {
   }
 }
 
+/* Help button styling */
+.help-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(50, 50, 50, 0.9);
+  border: 1px solid #555;
+  color: #aaa;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.help-button:hover {
+  background: rgba(70, 70, 70, 0.95);
+  color: #fff;
+  border-color: #777;
+}
+
 /* Legend styling */
 .dependency-legend {
   position: absolute;
-  bottom: 60px;
+  top: 48px;
   right: 10px;
   background: rgba(30, 30, 30, 0.95);
   border: 1px solid #444;
@@ -130,4 +157,13 @@ body {
 .legend-color.dependant {
   background: #f59e0b;
   box-shadow: 0 0 8px #f59e0b80;
+}
+
+.legend-hint {
+  margin: 10px 0 0 0;
+  padding-top: 8px;
+  border-top: 1px solid #444;
+  font-size: 11px;
+  color: #888;
+  font-style: italic;
 }
