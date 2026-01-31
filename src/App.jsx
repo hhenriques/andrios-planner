@@ -19,8 +19,9 @@ import "./index.css";
 
 const nodeTypes = { custom: CustomNode };
 
-// LocalStorage key for persisting purchased nodes
+// LocalStorage keys for persisting data
 const PURCHASED_NODES_KEY = "andrios-planner-purchased-nodes";
+const USED_ABILITIES_KEY = "andrios-planner-used-abilities";
 
 // Load purchased nodes from localStorage
 const loadPurchasedNodes = () => {
@@ -43,6 +44,30 @@ const savePurchasedNodes = (purchasedSet) => {
     localStorage.setItem(PURCHASED_NODES_KEY, JSON.stringify(array));
   } catch (error) {
     console.error("Error saving purchased nodes to localStorage:", error);
+  }
+};
+
+// Load used abilities from localStorage
+const loadUsedAbilities = () => {
+  try {
+    const saved = localStorage.getItem(USED_ABILITIES_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      return new Set(parsed);
+    }
+  } catch (error) {
+    console.error("Error loading used abilities from localStorage:", error);
+  }
+  return new Set();
+};
+
+// Save used abilities to localStorage
+const saveUsedAbilities = (usedSet) => {
+  try {
+    const array = Array.from(usedSet);
+    localStorage.setItem(USED_ABILITIES_KEY, JSON.stringify(array));
+  } catch (error) {
+    console.error("Error saving used abilities to localStorage:", error);
   }
 };
 
@@ -154,11 +179,32 @@ function Flow() {
   
   // Toggle for showing the reset confirmation modal
   const [showResetModal, setShowResetModal] = useState(false);
+  
+  // Track which abilities have been used this arc
+  const [usedAbilities, setUsedAbilities] = useState(() => loadUsedAbilities());
 
   // Save purchased nodes to localStorage whenever they change
   useEffect(() => {
     savePurchasedNodes(purchasedNodes);
   }, [purchasedNodes]);
+  
+  // Save used abilities to localStorage whenever they change
+  useEffect(() => {
+    saveUsedAbilities(usedAbilities);
+  }, [usedAbilities]);
+  
+  // Toggle used state for an ability
+  const toggleAbilityUsed = useCallback((nodeId) => {
+    setUsedAbilities((prev) => {
+      const next = new Set(prev);
+      if (next.has(nodeId)) {
+        next.delete(nodeId);
+      } else {
+        next.add(nodeId);
+      }
+      return next;
+    });
+  }, []);
 
   // Toggle purchased state for a node (only if dependencies are met)
   const togglePurchased = useCallback((nodeId) => {
@@ -218,6 +264,28 @@ function Flow() {
       bonus: totalBonus,
       current: currentIncome,
     };
+  }, [purchasedNodes]);
+  
+  // Get list of unlocked abilities from purchased nodes
+  const unlockedAbilities = React.useMemo(() => {
+    const abilities = [];
+    
+    purchasedNodes.forEach((nodeId) => {
+      const node = initialData.nodes.find((n) => n.id === nodeId);
+      if (node && node.data.rewards) {
+        abilities.push({
+          id: nodeId,
+          label: node.data.label,
+          rewards: node.data.rewards,
+          building: node.data.building,
+        });
+      }
+    });
+    
+    // Sort by building name for organization
+    abilities.sort((a, b) => a.building.localeCompare(b.building));
+    
+    return abilities;
   }, [purchasedNodes]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(centeredNodes);
@@ -408,12 +476,54 @@ function Flow() {
           <Controls showInteractive={false} />
         </ReactFlow>
 
-        {/* Income Info Box */}
+        {/* Income & Abilities Box */}
         <div className="income-box">
-          <div className="income-label">Town Income</div>
-          <div className="income-value">{incomeData.current} pp/week</div>
-          {incomeData.bonus > 0 && (
-            <div className="income-bonus">+{incomeData.bonus}% from upgrades</div>
+          <div className="income-section">
+            <div className="income-label">Town Income</div>
+            <div className="income-value">{incomeData.current} pp/week</div>
+            {incomeData.bonus > 0 && (
+              <div className="income-bonus">+{incomeData.bonus}% from upgrades</div>
+            )}
+          </div>
+          
+          {unlockedAbilities.length > 0 && (
+            <div className="abilities-section">
+              <div className="abilities-header">
+                <span className="abilities-label">Unlocked Abilities</span>
+                <div className="abilities-header-right">
+                  <span className="abilities-count">
+                    {unlockedAbilities.filter(a => !usedAbilities.has(a.id)).length}/{unlockedAbilities.length}
+                  </span>
+                  {usedAbilities.size > 0 && (
+                    <button 
+                      className="new-arc-button"
+                      onClick={() => setUsedAbilities(new Set())}
+                      title="Reset all abilities for a new arc"
+                    >
+                      New Arc
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div className="abilities-list">
+                {unlockedAbilities.map((ability) => (
+                  <label 
+                    key={ability.id} 
+                    className={`ability-item ${usedAbilities.has(ability.id) ? "used" : ""}`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={usedAbilities.has(ability.id)}
+                      onChange={() => toggleAbilityUsed(ability.id)}
+                    />
+                    <div className="ability-content">
+                      <span className="ability-name">{ability.label}</span>
+                      <span className="ability-rewards">{ability.rewards}</span>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
           )}
         </div>
 
