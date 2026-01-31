@@ -1,0 +1,55 @@
+/**
+ * FILE: index.css
+ */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  background: #111;
+  color: white;
+  overflow: hidden;
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 150px;
+  background: #1a1a1a;
+  border-right: 1px solid #333;
+  z-index: 10;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.lane-label {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  padding: 40px 0 0 15px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #aaa;
+  border-bottom: 1px solid #333;
+  box-sizing: border-box;
+  background: rgba(30, 30, 30, 0.5);
+}
+
+.lane-label:nth-child(odd) {
+  background: rgba(40, 40, 40, 0.5);
+}
+
+/* React Flow Tweaks */
+.react-flow__controls {
+  box-shadow: none;
+  border: 1px solid #333;
+}
+.react-flow__controls-button {
+  background: #222;
+  border-bottom: 1px solid #333;
+  fill: white;
+}
+.react-flow__controls-button:hover {
+  background: #333;
+}
