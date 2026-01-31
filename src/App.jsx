@@ -46,6 +46,35 @@ const savePurchasedNodes = (purchasedSet) => {
   }
 };
 
+// Build dependency map: for each node, find which nodes must be purchased first
+// All edges (including cross-chain) are hard dependencies
+const buildDependencyMap = () => {
+  const depMap = new Map();
+  
+  // Initialize all nodes with empty dependency arrays
+  initialData.nodes.forEach((node) => {
+    depMap.set(node.id, []);
+  });
+  
+  // For each edge, the target node depends on the source node
+  // Both regular and cross-chain edges are required dependencies
+  initialData.edges.forEach((edge) => {
+    const deps = depMap.get(edge.target) || [];
+    deps.push(edge.source);
+    depMap.set(edge.target, deps);
+  });
+  
+  return depMap;
+};
+
+const dependencyMap = buildDependencyMap();
+
+// Check if a node can be purchased (all dependencies are purchased)
+const canPurchaseNode = (nodeId, purchasedSet) => {
+  const dependencies = dependencyMap.get(nodeId) || [];
+  return dependencies.every((depId) => purchasedSet.has(depId));
+};
+
 // Extract unique buildings to create the side labels
 const buildings = [...new Set(initialData.nodes.map((n) => n.data.building))];
 // Calculate Y positions for labels (assuming they are sorted by Y in the data)
@@ -85,20 +114,24 @@ function Flow() {
     savePurchasedNodes(purchasedNodes);
   }, [purchasedNodes]);
 
-  // Toggle purchased state for a node
+  // Toggle purchased state for a node (only if dependencies are met)
   const togglePurchased = useCallback((nodeId) => {
     setPurchasedNodes((prev) => {
       const next = new Set(prev);
       if (next.has(nodeId)) {
+        // Always allow unpurchasing
         next.delete(nodeId);
       } else {
-        next.add(nodeId);
+        // Only allow purchasing if dependencies are met
+        if (canPurchaseNode(nodeId, prev)) {
+          next.add(nodeId);
+        }
       }
       return next;
     });
   }, []);
 
-  // Derive nodes with purchased state
+  // Derive nodes with purchased state and canPurchase info
   const nodesWithPurchasedState = React.useMemo(
     () =>
       centeredNodes.map((node) => ({
@@ -106,6 +139,8 @@ function Flow() {
         data: {
           ...node.data,
           purchased: purchasedNodes.has(node.id),
+          canPurchase: canPurchaseNode(node.id, purchasedNodes),
+          dependencies: dependencyMap.get(node.id) || [],
           onTogglePurchased: () => togglePurchased(node.id),
         },
       })),

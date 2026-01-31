@@ -6,11 +6,16 @@ import React, { memo } from "react";
 import { Handle, Position } from "reactflow";
 
 const CustomNode = ({ data }) => {
-  const { purchased, onTogglePurchased } = data;
+  const { purchased, canPurchase, onTogglePurchased } = data;
+  
+  // Node is locked if not purchased and dependencies aren't met
+  const isLocked = !purchased && !canPurchase;
 
   const handleCheckboxClick = (e) => {
     e.stopPropagation();
-    onTogglePurchased?.();
+    if (!isLocked) {
+      onTogglePurchased?.();
+    }
   };
 
   return (
@@ -18,8 +23,8 @@ const CustomNode = ({ data }) => {
       style={{
         padding: "12px",
         borderRadius: "8px",
-        background: purchased ? "#1a3a1a" : "#2B2B2B",
-        border: purchased ? "2px solid #4caf50" : "1px solid #555",
+        background: purchased ? "#1a3a1a" : isLocked ? "#1a1a1a" : "#2B2B2B",
+        border: purchased ? "2px solid #4caf50" : isLocked ? "1px solid #333" : "1px solid #555",
         width: "240px",
         color: "white",
         boxShadow: purchased
@@ -27,8 +32,8 @@ const CustomNode = ({ data }) => {
           : "0 4px 6px rgba(0,0,0,0.3)",
         position: "relative",
         transition: "all 0.2s ease",
-        cursor: "default",
-        opacity: purchased ? 0.85 : 1,
+        cursor: isLocked ? "not-allowed" : "default",
+        opacity: purchased ? 0.85 : isLocked ? 0.5 : 1,
       }}
     >
       {/* Inputs handle */}
@@ -36,7 +41,7 @@ const CustomNode = ({ data }) => {
         type="target"
         position={Position.Left}
         style={{
-          background: purchased ? "#4caf50" : "#777",
+          background: purchased ? "#4caf50" : isLocked ? "#444" : "#777",
           width: "8px",
           height: "8px",
         }}
@@ -44,7 +49,7 @@ const CustomNode = ({ data }) => {
 
       <div
         style={{
-          borderBottom: "1px solid #444",
+          borderBottom: isLocked ? "1px solid #333" : "1px solid #444",
           paddingBottom: "8px",
           marginBottom: "8px",
           display: "flex",
@@ -53,27 +58,44 @@ const CustomNode = ({ data }) => {
           gap: "8px",
         }}
       >
-        {/* Checkbox for purchased state */}
+        {/* Checkbox for purchased state (or lock icon if locked) */}
         <label
           style={{
             display: "flex",
             alignItems: "center",
-            cursor: "pointer",
+            cursor: isLocked ? "not-allowed" : "pointer",
             flexShrink: 0,
           }}
           onClick={handleCheckboxClick}
+          title={isLocked ? "Purchase required dependencies first" : ""}
         >
-          <input
-            type="checkbox"
-            checked={purchased || false}
-            onChange={() => {}}
-            style={{
-              width: "16px",
-              height: "16px",
-              cursor: "pointer",
-              accentColor: "#4caf50",
-            }}
-          />
+          {isLocked ? (
+            <span
+              style={{
+                width: "16px",
+                height: "16px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "12px",
+                color: "#666",
+              }}
+            >
+              🔒
+            </span>
+          ) : (
+            <input
+              type="checkbox"
+              checked={purchased || false}
+              onChange={() => {}}
+              style={{
+                width: "16px",
+                height: "16px",
+                cursor: "pointer",
+                accentColor: "#4caf50",
+              }}
+            />
+          )}
         </label>
         <strong
           style={{
@@ -88,8 +110,8 @@ const CustomNode = ({ data }) => {
         <span
           style={{
             fontSize: "11px",
-            background: purchased ? "#4caf50" : "#ffcd3c",
-            color: purchased ? "white" : "black",
+            background: purchased ? "#4caf50" : isLocked ? "#555" : "#ffcd3c",
+            color: purchased ? "white" : isLocked ? "#888" : "black",
             padding: "2px 6px",
             borderRadius: "4px",
             fontWeight: "bold",
@@ -146,7 +168,7 @@ const CustomNode = ({ data }) => {
         type="source"
         position={Position.Right}
         style={{
-          background: purchased ? "#4caf50" : "#777",
+          background: purchased ? "#4caf50" : isLocked ? "#444" : "#777",
           width: "8px",
           height: "8px",
         }}
