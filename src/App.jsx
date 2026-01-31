@@ -69,6 +69,33 @@ const buildDependencyMap = () => {
 
 const dependencyMap = buildDependencyMap();
 
+// Build reverse dependency map: for each node, find which nodes it unlocks
+const buildUnlocksMap = () => {
+  const unlocksMap = new Map();
+  
+  // Initialize all nodes with empty arrays
+  initialData.nodes.forEach((node) => {
+    unlocksMap.set(node.id, []);
+  });
+  
+  // For each edge, the source node unlocks the target node
+  initialData.edges.forEach((edge) => {
+    const unlocks = unlocksMap.get(edge.source) || [];
+    unlocks.push(edge.target);
+    unlocksMap.set(edge.source, unlocks);
+  });
+  
+  return unlocksMap;
+};
+
+const unlocksMap = buildUnlocksMap();
+
+// Helper to get node label by id
+const getNodeLabel = (nodeId) => {
+  const node = initialData.nodes.find((n) => n.id === nodeId);
+  return node ? node.data.label : nodeId;
+};
+
 // Check if a node can be purchased (all dependencies are purchased)
 const canPurchaseNode = (nodeId, purchasedSet) => {
   const dependencies = dependencyMap.get(nodeId) || [];
@@ -405,6 +432,101 @@ function Flow() {
           </div>
         )}
       </div>
+
+      {/* Detail Panel */}
+      {selectedNodeId && (() => {
+        const selectedNode = initialData.nodes.find((n) => n.id === selectedNodeId);
+        if (!selectedNode) return null;
+        
+        const nodeData = selectedNode.data;
+        const dependencies = dependencyMap.get(selectedNodeId) || [];
+        const unlocks = unlocksMap.get(selectedNodeId) || [];
+        const isPurchased = purchasedNodes.has(selectedNodeId);
+        const canBuy = canPurchaseNode(selectedNodeId, purchasedNodes);
+        
+        return (
+          <div className="detail-panel">
+            <button 
+              className="detail-panel-close" 
+              onClick={() => setSelectedNodeId(null)}
+              title="Close panel"
+            >
+              ×
+            </button>
+            
+            <div className="detail-panel-header">
+              <h2>{nodeData.label}</h2>
+              <span className="detail-building">{nodeData.building}</span>
+            </div>
+            
+            <div className="detail-panel-status">
+              {isPurchased ? (
+                <span className="status-badge purchased">Purchased</span>
+              ) : canBuy ? (
+                <span className="status-badge available">Available</span>
+              ) : (
+                <span className="status-badge locked">Locked</span>
+              )}
+            </div>
+            
+            <div className="detail-panel-section">
+              <div className="detail-row">
+                <span className="detail-label">Cost</span>
+                <span className="detail-value cost">{nodeData.cost} pp</span>
+              </div>
+              {nodeData.income !== "—" && (
+                <div className="detail-row">
+                  <span className="detail-label">Income</span>
+                  <span className="detail-value income">{nodeData.income}</span>
+                </div>
+              )}
+            </div>
+            
+            <div className="detail-panel-section">
+              <h4>Rewards</h4>
+              <p className="detail-rewards">{nodeData.rewards}</p>
+            </div>
+            
+            <div className="detail-panel-section flavor">
+              <p className="detail-flavor">"{nodeData.flavor}"</p>
+            </div>
+            
+            {dependencies.length > 0 && (
+              <div className="detail-panel-section">
+                <h4>
+                  <span className="dependency-icon">●</span>
+                  Requires
+                </h4>
+                <ul className="detail-list dependencies">
+                  {dependencies.map((depId) => (
+                    <li key={depId} className={purchasedNodes.has(depId) ? "satisfied" : ""}>
+                      {purchasedNodes.has(depId) && <span className="check">✓</span>}
+                      {getNodeLabel(depId)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            {unlocks.length > 0 && (
+              <div className="detail-panel-section">
+                <h4>
+                  <span className="unlocks-icon">●</span>
+                  Unlocks
+                </h4>
+                <ul className="detail-list unlocks">
+                  {unlocks.map((unlockId) => (
+                    <li key={unlockId} className={purchasedNodes.has(unlockId) ? "satisfied" : ""}>
+                      {purchasedNodes.has(unlockId) && <span className="check">✓</span>}
+                      {getNodeLabel(unlockId)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        );
+      })()}
     </div>
   );
 }
