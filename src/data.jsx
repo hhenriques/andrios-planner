@@ -70,7 +70,7 @@ export const initialData = {
         cost: 500,
         building: "The River Store",
         income: "+10%",
-        rewards: "Freely acquire mundane expedition gear",
+        rewards: "When provisioning or at Council supply caches, freely acquire mundane expedition gear",
         flavor:
           "The River Store annexes nearby storage and builds clean, dry racks for rope, timber, canvas, and tools. Inventory becomes visible: tagged crates, standard packs, and a clerk who can outfit a party without asking questions. Expeditions stop ‘shopping’ and start ‘issuing supplies’.",
       },
@@ -84,7 +84,7 @@ export const initialData = {
         cost: 1000,
         building: "The River Store",
         income: "+5%",
-        rewards: "Uncommon adventuring gear always available",
+        rewards: "Uncommon adventuring gear always available when provisioning; once per arc, have one item delivered to your current location",
         flavor:
           "Signed contracts appear with caravan masters, triton ferries, smiths, and herbalists, specifying delivery windows, quality marks, and penalties for delays. A backroom becomes a procurement desk, stamped with seals rather than price tags. Uncommon gear isn’t ‘found’; it’s ‘scheduled’.",
       },
@@ -127,7 +127,7 @@ export const initialData = {
         cost: 250,
         building: "The Huntress",
         income: "+2%",
-        rewards: "Gain one bounty hook with guaranteed payoff",
+        rewards: "Gain one bounty hook per arc with guaranteed gold payoff (income)",
         flavor:
           "A formal board goes up near the hearth: wax-sealed notices, reward tokens, and names written twice: once in ink, once in rumor. Hunters start arriving with questions and leaving with purpose. The Huntress becomes a place where adventures get posted, not merely told.",
       },
@@ -198,7 +198,7 @@ export const initialData = {
         cost: 1000,
         building: "House of Healing",
         income: "+5%",
-        rewards: "Resistance, antitoxin, and restoration elixirs available",
+        rewards: "Per arc, gain resistance, antitoxin, or restoration elixirs (issued when provisioning or delivered in the field)",
         flavor:
           "A reference cabinet appears with symptom tables, toxin sketches, and little notes from hunters and wardens pinned in the margins. The House begins brewing for specific threats rather than generic injury. Shelves fill with bottles that look identical until you read the tiny script on the tag, and realize it’s exactly what you needed.",
       },
@@ -255,7 +255,7 @@ export const initialData = {
         cost: 1000,
         building: "The Bronze Hoof",
         income: "+5%",
-        rewards: "Reduce crafting downtime",
+        rewards: "Reduce crafting downtime (income / efficiency)",
         flavor:
           "Patterns, jigs, and standardized fittings appear, tools that turn artistry into repeatable output. The Bronze Hoof can now work in batches without losing quality. When the Council needs something, the question stops being ‘can it be made?’ and becomes ‘how soon?’",
       },
@@ -356,7 +356,7 @@ export const initialData = {
         cost: 500,
         building: "Council of Commerce",
         income: "+10%",
-        rewards: "Convert gold to expedition resources at a discount",
+        rewards: "Convert gold to expedition resources at a discount (income)",
         flavor:
           "The Council of Commerce standardizes fees and closes loopholes, meaning fewer middlemen, less ‘lost’ money. Ledgers get rewritten, collectors get trained, and suddenly revenue is predictable. That predictability turns into leverage: supplies and services can be negotiated in bulk, not begged for piecemeal.",
       },
@@ -384,7 +384,7 @@ export const initialData = {
         cost: 1500,
         building: "Council of Commerce",
         income: "+10%",
-        rewards: "Force access to restricted goods or services",
+        rewards: "Once per arc, secure access to a restricted good or service via monopoly leverage, regardless of location",
         flavor:
           "Exclusive rights are negotiated: priority routes, reserved stock, and ‘first refusal’ agreements that other buyers can’t touch. The Commerce Council keeps a registry of controlled goods and who owes the Council favors. When you need something difficult, the city doesn’t search. It claims.",
       },
@@ -427,7 +427,7 @@ export const initialData = {
         cost: 750,
         building: "Council of Culture",
         income: "+5%",
-        rewards: "Identify relics safely and instantly",
+        rewards: "Once per arc, identify a relic safely and instantly (at the Exhibition or in the field via courier/Conduit)",
         flavor:
           "A gallery is built with proper plinths, warded glass, and curator protocols. Relics are handled like temperamental guests, observed, recorded, and never rushed. The city learns to read old craftsmanship without waking the dangerous parts of it.",
       },
@@ -484,7 +484,7 @@ export const initialData = {
         cost: 1000,
         building: "Council of Education",
         income: "—",
-        rewards: "Reduce downtime for study or crafting",
+        rewards: "Reduce downtime for study or crafting (income / efficiency)",
         flavor:
           "Formal orders form around disciplines: ruin cartography, Nyx theory, pre-divine craft, monster anatomy. Knowledge gets organized into checklists, procedures, and teachable methods. What once took weeks of fumbling becomes a practiced workflow.",
       },
@@ -513,7 +513,7 @@ export const initialData = {
         cost: 500,
         building: "Setessan Embassy",
         income: "+5%",
-        rewards: "Advantage on diplomacy with allied factions",
+        rewards: "Advantage on diplomacy with allied factions, wherever you encounter them",
         flavor:
           "The small house is refitted into an official embassy with Setessan banners, a sealed archive, and a receiving room that follows protocol to the letter. Courtesies become predictable, and that predictability builds trust. Deals feel less like favors and more like policy.",
       },
