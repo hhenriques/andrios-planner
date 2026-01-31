@@ -47,10 +47,44 @@ const centeredNodes = initialData.nodes.map((node) => ({
 }));
 
 function Flow() {
-  const [nodes, , onNodesChange] = useNodesState(centeredNodes);
+  const [purchasedNodes, setPurchasedNodes] = useState(new Set());
   const [viewport, setViewport] = useState({ x: 0, y: 0, zoom: 0.5 });
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
+
+  // Toggle purchased state for a node
+  const togglePurchased = useCallback((nodeId) => {
+    setPurchasedNodes((prev) => {
+      const next = new Set(prev);
+      if (next.has(nodeId)) {
+        next.delete(nodeId);
+      } else {
+        next.add(nodeId);
+      }
+      return next;
+    });
+  }, []);
+
+  // Derive nodes with purchased state
+  const nodesWithPurchasedState = React.useMemo(
+    () =>
+      centeredNodes.map((node) => ({
+        ...node,
+        data: {
+          ...node.data,
+          purchased: purchasedNodes.has(node.id),
+          onTogglePurchased: () => togglePurchased(node.id),
+        },
+      })),
+    [purchasedNodes, togglePurchased]
+  );
+
+  const [nodes, setNodes, onNodesChange] = useNodesState(centeredNodes);
+
+  // Update nodes when purchased state changes
+  React.useEffect(() => {
+    setNodes(nodesWithPurchasedState);
+  }, [nodesWithPurchasedState, setNodes]);
 
   // Initialize edges: Hide "cross-chain" edges by default
   const [edges, setEdges, onEdgesChange] = useEdgesState(
