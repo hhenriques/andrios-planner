@@ -102,12 +102,22 @@ const centeredNodes = initialData.nodes.map((node) => ({
   },
 }));
 
+// Colors for dependency visualization
+const DEPENDENCY_COLOR = "#3b82f6"; // Blue - nodes this depends on
+const DEPENDANT_COLOR = "#f59e0b";  // Orange - nodes that depend on this
+
 function Flow() {
   // Initialize purchased nodes from localStorage
   const [purchasedNodes, setPurchasedNodes] = useState(() => loadPurchasedNodes());
   const [viewport, setViewport] = useState({ x: 0, y: 0, zoom: 0.5 });
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
+  
+  // Track which nodes are highlighted as dependencies/dependants
+  const [highlightedNodes, setHighlightedNodes] = useState({
+    dependencies: new Set(), // Nodes the active node depends on
+    dependants: new Set(),   // Nodes that depend on the active node
+  });
 
   // Save purchased nodes to localStorage whenever they change
   useEffect(() => {
@@ -142,9 +152,12 @@ function Flow() {
           canPurchase: canPurchaseNode(node.id, purchasedNodes),
           dependencies: dependencyMap.get(node.id) || [],
           onTogglePurchased: () => togglePurchased(node.id),
+          // Highlighting state for dependency visualization
+          isDependencyHighlighted: highlightedNodes.dependencies.has(node.id),
+          isDependantHighlighted: highlightedNodes.dependants.has(node.id),
         },
       })),
-    [purchasedNodes, togglePurchased]
+    [purchasedNodes, togglePurchased, highlightedNodes]
   );
 
   const [nodes, setNodes, onNodesChange] = useNodesState(centeredNodes);
@@ -170,9 +183,15 @@ function Flow() {
     }))
   );
 
-  // Helper to update edge visibility based on selected and hovered nodes
+  // Helper to update edge visibility and node highlighting based on selected and hovered nodes
   const updateEdgeVisibility = useCallback(
     (selectedId, hoveredId) => {
+      const activeNodeId = hoveredId || selectedId;
+      
+      // Track dependencies and dependants for node highlighting
+      const dependencies = new Set();
+      const dependants = new Set();
+      
       setEdges((eds) =>
         eds.map((edge) => {
           if (!edge.data?.isCrossChain) return edge; // Leave normal edges alone
@@ -184,11 +203,41 @@ function Flow() {
             hoveredId && (edge.source === hoveredId || edge.target === hoveredId);
 
           if (isConnectedToSelected || isConnectedToHovered) {
-            return { ...edge, hidden: false, animated: true };
+            // Determine direction relative to the active node
+            const isDependency = edge.target === activeNodeId; // Active node depends on source
+            const isDependant = edge.source === activeNodeId;  // Target depends on active node
+            
+            // Track for node highlighting
+            if (isDependency) dependencies.add(edge.source);
+            if (isDependant) dependants.add(edge.target);
+            
+            // Color and style based on direction
+            const edgeColor = isDependency ? DEPENDENCY_COLOR : DEPENDANT_COLOR;
+            
+            return {
+              ...edge,
+              hidden: false,
+              animated: true,
+              className: isDependency ? "dependency-edge" : "dependant-edge",
+              style: {
+                stroke: edgeColor,
+                strokeWidth: 3,
+                strokeDasharray: "5,5",
+              },
+              markerEnd: {
+                type: "arrowclosed",
+                color: edgeColor,
+                width: 20,
+                height: 20,
+              },
+            };
           }
           return { ...edge, hidden: true, animated: false };
         })
       );
+      
+      // Update highlighted nodes state
+      setHighlightedNodes({ dependencies, dependants });
     },
     [setEdges]
   );
@@ -205,6 +254,10 @@ function Flow() {
   // Reset hover state when leaving
   const onNodeMouseLeave = useCallback(() => {
     setHoveredNodeId(null);
+    // If no node is selected, clear highlighting
+    if (!selectedNodeId) {
+      setHighlightedNodes({ dependencies: new Set(), dependants: new Set() });
+    }
     updateEdgeVisibility(selectedNodeId, null);
   }, [selectedNodeId, updateEdgeVisibility]);
 
@@ -220,6 +273,7 @@ function Flow() {
   // When clicking empty space (pane), deselect and hide edges
   const onPaneClick = useCallback(() => {
     setSelectedNodeId(null);
+    setHighlightedNodes({ dependencies: new Set(), dependants: new Set() });
     updateEdgeVisibility(null, hoveredNodeId);
   }, [hoveredNodeId, updateEdgeVisibility]);
 
@@ -227,6 +281,11 @@ function Flow() {
   const onMove = useCallback((event, vp) => {
     setViewport(vp);
   }, []);
+
+  // DEBUG: Reset all purchased nodes
+  const handleReset = () => {
+    setPurchasedNodes(new Set());
+  };
 
   return (
     <div
@@ -282,6 +341,38 @@ function Flow() {
           <Background color="#222" gap={40} />
           <Controls showInteractive={false} />
         </ReactFlow>
+
+        {/* Legend for dependency visualization */}
+        <div className="dependency-legend">
+          <h4>Dependencies</h4>
+          <div className="legend-item">
+            <div className="legend-color dependency"></div>
+            <span>Requires (depends on)</span>
+          </div>
+          <div className="legend-item">
+            <div className="legend-color dependant"></div>
+            <span>Unlocks (dependant)</span>
+          </div>
+        </div>
+
+        {/* DEBUG: Reset button - remove this block when not needed */}
+        <button
+          onClick={handleReset}
+          style={{
+            position: "absolute",
+            bottom: 10,
+            right: 10,
+            padding: "8px 16px",
+            background: "#c62828",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontSize: "12px",
+          }}
+        >
+          Reset Purchases
+        </button>
       </div>
     </div>
   );

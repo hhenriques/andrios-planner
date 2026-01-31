@@ -5,11 +5,25 @@
 import React, { memo } from "react";
 import { Handle, Position } from "reactflow";
 
+// Colors for dependency visualization (must match App.jsx)
+const DEPENDENCY_COLOR = "#3b82f6"; // Blue - nodes this depends on
+const DEPENDANT_COLOR = "#f59e0b";  // Orange - nodes that depend on this
+
 const CustomNode = ({ data }) => {
-  const { purchased, canPurchase, onTogglePurchased } = data;
+  const { 
+    purchased, 
+    canPurchase, 
+    onTogglePurchased,
+    isDependencyHighlighted,
+    isDependantHighlighted,
+  } = data;
   
   // Node is locked if not purchased and dependencies aren't met
   const isLocked = !purchased && !canPurchase;
+  
+  // Determine highlight state
+  const isHighlighted = isDependencyHighlighted || isDependantHighlighted;
+  const highlightColor = isDependencyHighlighted ? DEPENDENCY_COLOR : DEPENDANT_COLOR;
 
   const handleCheckboxClick = (e) => {
     e.stopPropagation();
@@ -18,18 +32,33 @@ const CustomNode = ({ data }) => {
     }
   };
 
+  // Compute border style based on state priority: highlighted > purchased > locked > default
+  const getBorderStyle = () => {
+    if (isHighlighted) return `2px solid ${highlightColor}`;
+    if (purchased) return "2px solid #4caf50";
+    if (isLocked) return "1px solid #333";
+    return "1px solid #555";
+  };
+  
+  // Compute box shadow based on state
+  const getBoxShadow = () => {
+    if (isHighlighted) {
+      return `0 0 20px ${highlightColor}80, 0 0 40px ${highlightColor}40`;
+    }
+    if (purchased) return "0 4px 12px rgba(76, 175, 80, 0.3)";
+    return "0 4px 6px rgba(0,0,0,0.3)";
+  };
+
   return (
     <div
       style={{
         padding: "12px",
         borderRadius: "8px",
         background: purchased ? "#1a3a1a" : isLocked ? "#1a1a1a" : "#2B2B2B",
-        border: purchased ? "2px solid #4caf50" : isLocked ? "1px solid #333" : "1px solid #555",
+        border: getBorderStyle(),
         width: "240px",
         color: "white",
-        boxShadow: purchased
-          ? "0 4px 12px rgba(76, 175, 80, 0.3)"
-          : "0 4px 6px rgba(0,0,0,0.3)",
+        boxShadow: getBoxShadow(),
         position: "relative",
         transition: "all 0.2s ease",
         cursor: isLocked ? "not-allowed" : "default",
