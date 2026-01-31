@@ -280,9 +280,11 @@ function Flow() {
     setViewport(vp);
   }, []);
 
-  // DEBUG: Reset all purchased nodes
+  // Reset all purchased nodes with confirmation
   const handleReset = () => {
-    setPurchasedNodes(new Set());
+    if (window.confirm("Reset all purchases? This cannot be undone.")) {
+      setPurchasedNodes(new Set());
+    }
   };
 
   return (
@@ -340,14 +342,23 @@ function Flow() {
           <Controls showInteractive={false} />
         </ReactFlow>
 
-        {/* Help button and legend panel */}
-        <button
-          onClick={() => setShowLegend(!showLegend)}
-          className="help-button"
-          title="Show legend"
-        >
-          ?
-        </button>
+        {/* Top right button group */}
+        <div className="top-button-group">
+          <button
+            onClick={handleReset}
+            className="toolbar-button reset-button"
+            title="Reset all purchases"
+          >
+            ↺
+          </button>
+          <button
+            onClick={() => setShowLegend(!showLegend)}
+            className={`toolbar-button help-button ${showLegend ? "active" : ""}`}
+            title="Show legend"
+          >
+            ?
+          </button>
+        </div>
         
         {showLegend && (
           <div className="dependency-legend">
@@ -363,25 +374,6 @@ function Flow() {
             <p className="legend-hint">Hover or click a node to see its dependencies</p>
           </div>
         )}
-
-        {/* DEBUG: Reset button - remove this block when not needed */}
-        <button
-          onClick={handleReset}
-          style={{
-            position: "absolute",
-            bottom: 10,
-            right: 10,
-            padding: "8px 16px",
-            background: "#c62828",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontSize: "12px",
-          }}
-        >
-          Reset Purchases
-        </button>
       </div>
     </div>
   );
