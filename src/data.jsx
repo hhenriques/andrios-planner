@@ -1057,13 +1057,12 @@ export const initialData = {
         style: { strokeDasharray: "5,5" },
       },
   
-      {
-        id: "e64",
-        source: "arcane-curriculum",
-        target: "aetherium-foundations",
-        animated: true,
-        label: "Unlocks Nexus",
-      },
+    {
+      id: "e64",
+      source: "arcane-curriculum",
+      target: "aetherium-foundations",
+      animated: true,
+    },
       {
         id: "e65",
         source: "aetherium-foundations",
