@@ -2,7 +2,7 @@
  * FILE: App.js
  * The main graph engine.
  */
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -30,9 +30,24 @@ const laneLabels = buildings.map((b) => {
 
 // Row height matches Y spacing in data (200px between each building row)
 const ROW_HEIGHT = 200;
+// Estimated node card height for vertical centering
+const NODE_HEIGHT = 100;
+// Offset to center nodes vertically in their lane
+const VERTICAL_OFFSET = (ROW_HEIGHT - NODE_HEIGHT) / 2;
+
+const SIDEBAR_WIDTH = 180;
+
+// Process nodes to center them vertically in their lanes
+const centeredNodes = initialData.nodes.map((node) => ({
+  ...node,
+  position: {
+    ...node.position,
+    y: node.position.y + VERTICAL_OFFSET,
+  },
+}));
 
 function Flow() {
-  const [nodes, , onNodesChange] = useNodesState(initialData.nodes);
+  const [nodes, , onNodesChange] = useNodesState(centeredNodes);
   const [viewport, setViewport] = useState({ x: 0, y: 0, zoom: 0.5 });
 
   // Initialize edges: Hide "cross-chain" edges by default
@@ -95,12 +110,11 @@ function Flow() {
       }}
     >
       {/* Sidebar Labels (The Swimlane Headers) */}
-      <div className="sidebar">
+      <div className="sidebar" style={{ width: SIDEBAR_WIDTH }}>
         <div
           style={{
             position: "relative",
-            transform: `translateY(${viewport.y}px) scale(${viewport.zoom})`,
-            transformOrigin: "top left",
+            height: "100%",
           }}
         >
           {laneLabels.map((label) => (
@@ -108,8 +122,8 @@ function Flow() {
               key={label.name}
               className="lane-label"
               style={{
-                top: label.y,
-                height: ROW_HEIGHT,
+                top: label.y * viewport.zoom + viewport.y,
+                height: ROW_HEIGHT * viewport.zoom,
               }}
             >
               {label.name}
