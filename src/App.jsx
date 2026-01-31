@@ -49,6 +49,8 @@ const centeredNodes = initialData.nodes.map((node) => ({
 function Flow() {
   const [nodes, , onNodesChange] = useNodesState(centeredNodes);
   const [viewport, setViewport] = useState({ x: 0, y: 0, zoom: 0.5 });
+  const [selectedNodeId, setSelectedNodeId] = useState(null);
+  const [hoveredNodeId, setHoveredNodeId] = useState(null);
 
   // Initialize edges: Hide "cross-chain" edges by default
   const [edges, setEdges, onEdgesChange] = useEdgesState(
@@ -66,34 +68,58 @@ function Flow() {
     }))
   );
 
-  // When hovering a node, reveal its specific hidden connections
-  const onNodeMouseEnter = useCallback(
-    (_, node) => {
+  // Helper to update edge visibility based on selected and hovered nodes
+  const updateEdgeVisibility = useCallback(
+    (selectedId, hoveredId) => {
       setEdges((eds) =>
         eds.map((edge) => {
           if (!edge.data?.isCrossChain) return edge; // Leave normal edges alone
 
-          // If this edge is connected to the hovered node, SHOW IT
-          if (edge.source === node.id || edge.target === node.id) {
+          // Show edge if connected to selected OR hovered node
+          const isConnectedToSelected =
+            selectedId && (edge.source === selectedId || edge.target === selectedId);
+          const isConnectedToHovered =
+            hoveredId && (edge.source === hoveredId || edge.target === hoveredId);
+
+          if (isConnectedToSelected || isConnectedToHovered) {
             return { ...edge, hidden: false, animated: true };
           }
-          return edge;
+          return { ...edge, hidden: true, animated: false };
         })
       );
     },
     [setEdges]
   );
 
-  // Reset when leaving
+  // When hovering a node, reveal its specific hidden connections
+  const onNodeMouseEnter = useCallback(
+    (_, node) => {
+      setHoveredNodeId(node.id);
+      updateEdgeVisibility(selectedNodeId, node.id);
+    },
+    [selectedNodeId, updateEdgeVisibility]
+  );
+
+  // Reset hover state when leaving
   const onNodeMouseLeave = useCallback(() => {
-    setEdges((eds) =>
-      eds.map((edge) => ({
-        ...edge,
-        hidden: edge.data?.isCrossChain || false,
-        animated: edge.data?.isCrossChain ? false : edge.animated,
-      }))
-    );
-  }, [setEdges]);
+    setHoveredNodeId(null);
+    updateEdgeVisibility(selectedNodeId, null);
+  }, [selectedNodeId, updateEdgeVisibility]);
+
+  // When clicking a node, keep its edges visible
+  const onNodeClick = useCallback(
+    (_, node) => {
+      setSelectedNodeId(node.id);
+      updateEdgeVisibility(node.id, hoveredNodeId);
+    },
+    [hoveredNodeId, updateEdgeVisibility]
+  );
+
+  // When clicking empty space (pane), deselect and hide edges
+  const onPaneClick = useCallback(() => {
+    setSelectedNodeId(null);
+    updateEdgeVisibility(null, hoveredNodeId);
+  }, [hoveredNodeId, updateEdgeVisibility]);
 
   // Track viewport changes to sync sidebar
   const onMove = useCallback((event, vp) => {
@@ -142,6 +168,8 @@ function Flow() {
           nodeTypes={nodeTypes}
           onNodeMouseEnter={onNodeMouseEnter}
           onNodeMouseLeave={onNodeMouseLeave}
+          onNodeClick={onNodeClick}
+          onPaneClick={onPaneClick}
           onMove={onMove}
           minZoom={0.2}
           maxZoom={1.5}
