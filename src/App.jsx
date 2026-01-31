@@ -120,6 +120,9 @@ const VERTICAL_OFFSET = (ROW_HEIGHT - NODE_HEIGHT) / 2;
 
 const SIDEBAR_WIDTH = 180;
 
+// Base town income
+const BASE_INCOME = 150;
+
 // Process nodes to center them vertically in their lanes
 const centeredNodes = initialData.nodes.map((node) => ({
   ...node,
@@ -192,6 +195,30 @@ function Flow() {
       })),
     [purchasedNodes, togglePurchased, highlightedNodes]
   );
+
+  // Calculate total town income based on purchased nodes
+  const incomeData = React.useMemo(() => {
+    let totalBonus = 0;
+    
+    purchasedNodes.forEach((nodeId) => {
+      const node = initialData.nodes.find((n) => n.id === nodeId);
+      if (node && node.data.income && node.data.income !== "—") {
+        // Parse the income string (e.g., "+10%" -> 10)
+        const match = node.data.income.match(/\+(\d+)%/);
+        if (match) {
+          totalBonus += parseInt(match[1], 10);
+        }
+      }
+    });
+    
+    const currentIncome = Math.round(BASE_INCOME * (1 + totalBonus / 100));
+    
+    return {
+      base: BASE_INCOME,
+      bonus: totalBonus,
+      current: currentIncome,
+    };
+  }, [purchasedNodes]);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(centeredNodes);
 
@@ -380,6 +407,15 @@ function Flow() {
           <Background color="#222" gap={40} />
           <Controls showInteractive={false} />
         </ReactFlow>
+
+        {/* Income Info Box */}
+        <div className="income-box">
+          <div className="income-label">Town Income</div>
+          <div className="income-value">{incomeData.current} pp/week</div>
+          {incomeData.bonus > 0 && (
+            <div className="income-bonus">+{incomeData.bonus}% from upgrades</div>
+          )}
+        </div>
 
         {/* Top right button group */}
         <div className="top-button-group">
