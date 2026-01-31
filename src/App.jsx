@@ -224,12 +224,7 @@ function Flow() {
                 strokeWidth: 3,
                 strokeDasharray: "5,5",
               },
-              markerEnd: {
-                type: "arrowclosed",
-                color: edgeColor,
-                width: 20,
-                height: 20,
-              },
+              markerEnd: undefined,
             };
           }
           return { ...edge, hidden: true, animated: false };
