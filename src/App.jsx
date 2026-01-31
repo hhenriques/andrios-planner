@@ -121,6 +121,9 @@ function Flow() {
   
   // Toggle for showing the help/legend panel
   const [showLegend, setShowLegend] = useState(false);
+  
+  // Toggle for showing the reset confirmation modal
+  const [showResetModal, setShowResetModal] = useState(false);
 
   // Save purchased nodes to localStorage whenever they change
   useEffect(() => {
@@ -280,11 +283,20 @@ function Flow() {
     setViewport(vp);
   }, []);
 
-  // Reset all purchased nodes with confirmation
-  const handleReset = () => {
-    if (window.confirm("Reset all purchases? This cannot be undone.")) {
-      setPurchasedNodes(new Set());
-    }
+  // Show reset confirmation modal
+  const handleResetClick = () => {
+    setShowResetModal(true);
+  };
+
+  // Confirm reset - actually clear purchases
+  const confirmReset = () => {
+    setPurchasedNodes(new Set());
+    setShowResetModal(false);
+  };
+
+  // Cancel reset
+  const cancelReset = () => {
+    setShowResetModal(false);
   };
 
   return (
@@ -345,11 +357,11 @@ function Flow() {
         {/* Top right button group */}
         <div className="top-button-group">
           <button
-            onClick={handleReset}
+            onClick={handleResetClick}
             className="toolbar-button reset-button"
             title="Reset all purchases"
           >
-            ↺
+            🗑
           </button>
           <button
             onClick={() => setShowLegend(!showLegend)}
@@ -372,6 +384,24 @@ function Flow() {
               <span>Unlocks (dependant)</span>
             </div>
             <p className="legend-hint">Hover or click a node to see its dependencies</p>
+          </div>
+        )}
+
+        {/* Reset confirmation modal */}
+        {showResetModal && (
+          <div className="modal-overlay" onClick={cancelReset}>
+            <div className="modal" onClick={(e) => e.stopPropagation()}>
+              <h3>Reset Progress</h3>
+              <p>Are you sure you want to reset all purchases? This cannot be undone.</p>
+              <div className="modal-buttons">
+                <button className="modal-button cancel" onClick={cancelReset}>
+                  Cancel
+                </button>
+                <button className="modal-button confirm" onClick={confirmReset}>
+                  Reset
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
