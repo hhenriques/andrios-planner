@@ -2,7 +2,7 @@
  * FILE: App.js
  * The main graph engine.
  */
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -18,6 +18,33 @@ import CustomNode from "./CustomNode";
 import "./index.css";
 
 const nodeTypes = { custom: CustomNode };
+
+// LocalStorage key for persisting purchased nodes
+const PURCHASED_NODES_KEY = "andrios-planner-purchased-nodes";
+
+// Load purchased nodes from localStorage
+const loadPurchasedNodes = () => {
+  try {
+    const saved = localStorage.getItem(PURCHASED_NODES_KEY);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      return new Set(parsed);
+    }
+  } catch (error) {
+    console.error("Error loading purchased nodes from localStorage:", error);
+  }
+  return new Set();
+};
+
+// Save purchased nodes to localStorage
+const savePurchasedNodes = (purchasedSet) => {
+  try {
+    const array = Array.from(purchasedSet);
+    localStorage.setItem(PURCHASED_NODES_KEY, JSON.stringify(array));
+  } catch (error) {
+    console.error("Error saving purchased nodes to localStorage:", error);
+  }
+};
 
 // Extract unique buildings to create the side labels
 const buildings = [...new Set(initialData.nodes.map((n) => n.data.building))];
@@ -47,10 +74,16 @@ const centeredNodes = initialData.nodes.map((node) => ({
 }));
 
 function Flow() {
-  const [purchasedNodes, setPurchasedNodes] = useState(new Set());
+  // Initialize purchased nodes from localStorage
+  const [purchasedNodes, setPurchasedNodes] = useState(() => loadPurchasedNodes());
   const [viewport, setViewport] = useState({ x: 0, y: 0, zoom: 0.5 });
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
+
+  // Save purchased nodes to localStorage whenever they change
+  useEffect(() => {
+    savePurchasedNodes(purchasedNodes);
+  }, [purchasedNodes]);
 
   // Toggle purchased state for a node
   const togglePurchased = useCallback((nodeId) => {
