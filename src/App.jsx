@@ -257,9 +257,11 @@ function Flow() {
           // Highlighting state for dependency visualization
           isDependencyHighlighted: highlightedNodes.dependencies.has(node.id),
           isDependantHighlighted: highlightedNodes.dependants.has(node.id),
+          // Selection state for green highlight
+          isSelected: selectedNodeId === node.id,
         },
       })),
-    [purchasedNodes, togglePurchased, highlightedNodes]
+    [purchasedNodes, togglePurchased, highlightedNodes, selectedNodeId]
   );
 
   // Calculate total town income based on purchased nodes

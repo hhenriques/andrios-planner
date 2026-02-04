@@ -8,6 +8,7 @@ import { Handle, Position } from "reactflow";
 // Colors for dependency visualization (must match App.jsx)
 const DEPENDENCY_COLOR = "#3b82f6"; // Blue - nodes this depends on
 const DEPENDANT_COLOR = "#f59e0b";  // Orange - nodes that depend on this
+const SELECTED_COLOR = "#22c55e";   // Green - selected node
 
 const CustomNode = ({ data }) => {
   const { 
@@ -16,6 +17,7 @@ const CustomNode = ({ data }) => {
     onTogglePurchased,
     isDependencyHighlighted,
     isDependantHighlighted,
+    isSelected,
   } = data;
   
   // Node is locked if not purchased and dependencies aren't met
@@ -32,8 +34,9 @@ const CustomNode = ({ data }) => {
     }
   };
 
-  // Compute border style based on state priority: highlighted > purchased > locked > default
+  // Compute border style based on state priority: selected > highlighted > purchased > locked > default
   const getBorderStyle = () => {
+    if (isSelected) return `3px solid ${SELECTED_COLOR}`;
     if (isHighlighted) return `2px solid ${highlightColor}`;
     if (purchased) return "2px solid #4caf50";
     if (isLocked) return "1px solid #333";
@@ -42,6 +45,9 @@ const CustomNode = ({ data }) => {
   
   // Compute box shadow based on state
   const getBoxShadow = () => {
+    if (isSelected) {
+      return `0 0 20px ${SELECTED_COLOR}80, 0 0 40px ${SELECTED_COLOR}40`;
+    }
     if (isHighlighted) {
       return `0 0 20px ${highlightColor}80, 0 0 40px ${highlightColor}40`;
     }
