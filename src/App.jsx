@@ -163,12 +163,30 @@ const centeredNodes = initialData.nodes.map((node) => ({
 const DEPENDENCY_COLOR = "#3b82f6"; // Blue - nodes this depends on
 const DEPENDANT_COLOR = "#f59e0b";  // Orange - nodes that depend on this
 
+// Partial search: match query against node label and building (case-insensitive)
+const searchNodes = (query) => {
+  const q = (query || "").trim().toLowerCase();
+  if (!q) return [];
+  return initialData.nodes.filter((node) => {
+    const label = (node.data?.label || "").toLowerCase();
+    const building = (node.data?.building || "").toLowerCase();
+    return label.includes(q) || building.includes(q);
+  });
+};
+
 function Flow() {
+  const { getNode, fitView } = useReactFlow();
+
   // Initialize purchased nodes from localStorage
   const [purchasedNodes, setPurchasedNodes] = useState(() => loadPurchasedNodes());
   const [viewport, setViewport] = useState({ x: 0, y: 0, zoom: 0.5 });
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   const [hoveredNodeId, setHoveredNodeId] = useState(null);
+
+  // Search: query, results dropdown visibility, keyboard highlight index
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+  const [searchHighlightIndex, setSearchHighlightIndex] = useState(0);
   
   // Track which nodes are highlighted as dependencies/dependants
   const [highlightedNodes, setHighlightedNodes] = useState({
@@ -268,6 +286,17 @@ function Flow() {
     };
   }, [purchasedNodes]);
   
+  // Search results (partial match on label and building)
+  const searchResults = React.useMemo(
+    () => searchNodes(searchQuery),
+    [searchQuery]
+  );
+
+  // Reset highlight when results change
+  React.useEffect(() => {
+    setSearchHighlightIndex(0);
+  }, [searchQuery]);
+
   // Get list of unlocked abilities from purchased nodes
   const unlockedAbilities = React.useMemo(() => {
     const abilities = [];
@@ -402,6 +431,23 @@ function Flow() {
     updateEdgeVisibility(null, hoveredNodeId);
   }, [hoveredNodeId, updateEdgeVisibility]);
 
+  // Select a node from search: zoom to it and open side panel (same as clicking the node)
+  const selectNodeFromSearch = useCallback(
+    (nodeId) => {
+      setSelectedNodeId(nodeId);
+      updateEdgeVisibility(nodeId, hoveredNodeId);
+      const node = getNode(nodeId);
+      if (node) {
+        setTimeout(() => {
+          fitView({ nodes: [node], padding: 0.3, duration: 400, maxZoom: 0.8 });
+        }, 0);
+      }
+      setSearchQuery("");
+      setSearchFocused(false);
+    },
+    [hoveredNodeId, updateEdgeVisibility, getNode, fitView]
+  );
+
   // Track viewport changes to sync sidebar
   const onMove = useCallback((event, vp) => {
     setViewport(vp);
@@ -529,6 +575,59 @@ function Flow() {
                   </label>
                 ))}
               </div>
+            </div>
+          )}
+        </div>
+
+        {/* Search: partial match, dropdown, Enter selects first result */}
+        <div className="search-wrap">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search nodes..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setTimeout(() => setSearchFocused(false), 150)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                const list = searchResults;
+                if (list.length > 0) {
+                  const idx = Math.min(searchHighlightIndex, list.length - 1);
+                  selectNodeFromSearch(list[idx].id);
+                  e.preventDefault();
+                }
+              } else if (e.key === "ArrowDown" && searchResults.length > 0) {
+                setSearchHighlightIndex((i) => (i + 1) % searchResults.length);
+                e.preventDefault();
+              } else if (e.key === "ArrowUp" && searchResults.length > 0) {
+                setSearchHighlightIndex((i) =>
+                  (i - 1 + searchResults.length) % searchResults.length
+                );
+                e.preventDefault();
+              }
+            }}
+          />
+          {searchFocused && searchQuery.trim() !== "" && (
+            <div className="search-dropdown">
+              {searchResults.length === 0 ? (
+                <div className="search-dropdown-item empty">No matches</div>
+              ) : (
+                searchResults.map((node, i) => (
+                  <button
+                    key={node.id}
+                    type="button"
+                    className={`search-dropdown-item ${i === searchHighlightIndex ? "highlight" : ""}`}
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                      selectNodeFromSearch(node.id);
+                    }}
+                  >
+                    <span className="search-result-label">{node.data.label}</span>
+                    <span className="search-result-building">{node.data.building}</span>
+                  </button>
+                ))
+              )}
             </div>
           )}
         </div>
