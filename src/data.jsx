@@ -17,7 +17,7 @@ export const initialData = {
         flavor:
           "The Watch formalizes reporting: patrol notes are copied, summarized, and circulated through runners, merchants, and wardens. Patterns begin to emerge—recurring dangers, failed approaches, and early warning signs. Even far from Andrios, the Council benefits from knowing how others usually get it wrong.",
       },
-      position: { x: 50, y: 0 },
+      position: { x: 100, y: 0 },
     },
     {
       id: "watch-barracks",
@@ -31,7 +31,7 @@ export const initialData = {
         flavor:
           "The Watch formalizes response doctrine: standing alerts, escalation signals, and drilled reactions to the most common failure modes. Briefings are no longer about where trouble happens, but how it begins. Even far from Andrios, the Council moves as if warned seconds before the ambush is sprung.",
       },
-      position: { x: 350, y: 0 },
+      position: { x: 400, y: 0 },
     },
     {
       id: "elite-guard-program",
@@ -45,7 +45,7 @@ export const initialData = {
         flavor:
           "Selection trials begin, testing quiet endurance, streetcraft, and field discipline. The program builds a small cadre of scouts and specialists who train with couriers and foresters, learning routes beyond the city and the habits of hostile terrain. Their reports read like the Council’s own planning notes.",
       },
-      position: { x: 650, y: 0 },
+      position: { x: 700, y: 0 },
     },
     {
       id: "civic-wardens",
@@ -60,7 +60,7 @@ export const initialData = {
         flavor:
           "The Wardens get dedicated kit, standing warrants, and pre-arranged mobilization routes, some mundane and some Nexus-supported. Their readiness isn’t about holding streets; it’s about showing up where the Council’s story turns and making the next ten minutes go your way. When called, they arrive with a plan, not a panic.",
       },
-      position: { x: 950, y: 0 },
+      position: { x: 1000, y: 0 },
     },
 
     {
@@ -76,7 +76,7 @@ export const initialData = {
         flavor:
           "The River Store annexes nearby storage and builds clean, dry racks for rope, timber, canvas, and tools. Inventory becomes visible: tagged crates, standard packs, and a clerk who can outfit a party without asking questions. Expeditions stop ‘shopping’ and start ‘issuing supplies’.",
       },
-      position: { x: 50, y: 250 },
+      position: { x: 100, y: 250 },
     },
     {
       id: "trade-contracts",
@@ -91,7 +91,7 @@ export const initialData = {
         flavor:
           "Signed contracts appear with caravan masters, triton ferries, smiths, and herbalists, specifying delivery windows, quality marks, and penalties for delays. A backroom becomes a procurement desk, stamped with seals rather than price tags. Uncommon gear isn’t ‘found’; it’s ‘scheduled’.",
       },
-      position: { x: 350, y: 250 },
+      position: { x: 400, y: 250 },
     },
     {
       id: "merchant-guild",
@@ -106,7 +106,7 @@ export const initialData = {
         flavor:
           "The Store becomes a hub: guild badges, standardized weights, and a courier board with routes pinned like veins across the region. Merchants coordinate rather than compete, and shortages get solved by shifting stock, not raising prices. Andrios starts feeling… supplied, even when you’re nowhere near it.",
       },
-      position: { x: 650, y: 250 },
+      position: { x: 700, y: 250 },
     },
     {
       id: "trade-fleet",
@@ -121,7 +121,7 @@ export const initialData = {
         flavor:
           "The River Store no longer reacts to demand—it anticipates it. Dedicated vessels, contracted caravans, and pre-negotiated staging points turn trade routes into a living network. By the time the Council acts, the solution is already in motion: gear staged ahead, transport waiting, and contingencies quietly paid for. Logistics stop being a question and start being an assumption.",
       },
-      position: { x: 950, y: 250 },
+      position: { x: 1000, y: 250 },
     },
 
     {
@@ -137,7 +137,7 @@ export const initialData = {
         flavor:
           "When the Council answers a bounty, the city pays attention. The fight is watched, recorded, and learned from—every wound treated, every fragment salvaged, every hard lesson carried home. Gold is claimed, yes, but so is understanding, and the House of Healing works longer and deeper in the aftermath, drawing on what the Council brought back. Each hunt leaves Andrios a little wiser, and the Council a little better prepared for the next.",
       },
-      position: { x: 50, y: 500 },
+      position: { x: 100, y: 500 },
     },
     {
       id: "hunter-circles",
@@ -152,7 +152,7 @@ export const initialData = {
         flavor:
           "Within the circles, hunts are dissected as carefully as the quarry itself. Veterans trade methods, not trophies: where to strike, what to preserve, and which details matter later. What the Council brings back is not raw material, but understanding, refined through shared experience and passed on with quiet precision.",
       },
-      position: { x: 350, y: 500 },
+      position: { x: 400, y: 500 },
     },
     {
       id: "master-hunts",
@@ -166,7 +166,7 @@ export const initialData = {
         flavor:
           "Master hunters are hired, and the lodge posts ‘seasonal quarry’ like a menu of legends. Preparations become ritual: special oils, warded snares, and field kits tuned to one creature’s habits. The payoff isn’t just coin; it’s a singular edge: a brew, a charm, a tool made for that one kind of problem.",
       },
-      position: { x: 650, y: 500 },
+      position: { x: 700, y: 500 },
     },
     {
       id: "trophy-hall",
@@ -180,7 +180,7 @@ export const initialData = {
         flavor:
           "An annex becomes a hall with mounted relic-horns, stitched hides, annotated skulls, and plaques describing what worked and what didn’t. Scholars, wardens, and would-be heroes visit just to study the exhibits. The Huntress stops guessing at monsters; it remembers them. That memory becomes actionable intel.",
       },
-      position: { x: 950, y: 500 },
+      position: { x: 1000, y: 500 },
     },
 
     {
@@ -195,7 +195,7 @@ export const initialData = {
         flavor:
           "The House adds benches, clean glassware, and proper stills, so no more brewing beside triage cots. Reagents get labeled and rotated, and a small storeroom is kept ‘for the Council’ as standard practice. Healing becomes consistent: same bottle, same effect, every time.",
       },
-      position: { x: 50, y: 750 },
+      position: { x: 100, y: 750 },
     },
     {
       id: "specialized-elixirs",
@@ -210,7 +210,7 @@ export const initialData = {
         flavor:
           "A reference cabinet appears with symptom tables, toxin sketches, and little notes from hunters and wardens pinned in the margins. The House begins brewing for specific threats rather than generic injury. Shelves fill with bottles that look identical until you read the tiny script on the tag, and realize it’s exactly what you needed.",
       },
-      position: { x: 350, y: 750 },
+      position: { x: 400, y: 750 },
     },
     {
       id: "advanced-remedies",
@@ -224,7 +224,7 @@ export const initialData = {
         flavor:
           "A commission desk opens with requests written like contracts, with ingredients, risks, and desired outcomes. The House starts using expedition reports and scholarly input to design solutions ahead of time. When you ask for a remedy now, you aren’t buying a potion. You’re ordering an answer.",
       },
-      position: { x: 650, y: 750 },
+      position: { x: 700, y: 750 },
     },
     {
       id: "alchemical-mastery",
@@ -239,7 +239,7 @@ export const initialData = {
         flavor:
           "At this level, the House no longer waits for wounds to arrive. Protocols are written in advance, mixtures prepared for threats not yet named. When the Council sets out, their bodies are already defended by careful foresight—chemistry, magic, and experience aligned to ensure that some kinds of harm simply never take hold.",
       },
-      position: { x: 950, y: 750 },
+      position: { x: 1000, y: 750 },
     },
 
     {
@@ -254,7 +254,7 @@ export const initialData = {
         flavor:
           "The forge expands: better bellows, stronger tongs, harder anvils, and a quench trough that doesn’t crack when the work gets serious. The smith stops ‘making do’ and starts producing gear meant to survive real expeditions. Even mundane steel comes out cleaner, straighter, and dependable.",
       },
-      position: { x: 50, y: 1000 },
+      position: { x: 100, y: 1000 },
     },
     {
       id: "masterwork-arms",
@@ -269,7 +269,7 @@ export const initialData = {
         flavor:
           "Before the Council departs, the smiths of the Bronze Hoof listen carefully. Where they are going, what they expect to face, what failed them last time. Plates are adjusted, edges reforged, grips rewrapped. Nothing flashy, nothing permanent, just the quiet confidence that when the moment comes, one piece of gear will feel as if it was made for this.",
       },
-      position: { x: 350, y: 1000 },
+      position: { x: 400, y: 1000 },
     },
     {
       id: "enchanted-fittings",
@@ -284,7 +284,7 @@ export const initialData = {
         flavor:
           "By now, the Bronze Hoof no longer forges finished things. Slots are left open, channels cut shallow, and sigils set to be replaced. Before the Council departs, one piece of gear is quietly prepared, its fittings aligned to the road ahead. For this journey, steel and magic move in step, shaped not to endure forever, but to matter when it counts.",
       },
-      position: { x: 650, y: 1000 },
+      position: { x: 700, y: 1000 },
     },
     {
       id: "relic-reinforcement",
@@ -299,7 +299,7 @@ export const initialData = {
         flavor:
           "Some tools endure long enough to be shaped by the hands that wield them. In the forges of the Bronze Hoof, such items are not remade, but acknowledged. Marks are set, flaws reinforced, and meaning sealed into the metal itself. From that moment on, the item carries more than magic. It carries memory, purpose, and a future bound to the Council’s deeds.",
       },
-      position: { x: 950, y: 1000 },
+      position: { x: 1000, y: 1000 },
     },
 
     {
@@ -315,7 +315,7 @@ export const initialData = {
         flavor:
           "Before the Council departs, the wardens do not offer escort or protection. They offer stories, maps drawn from memory, and warnings learned the hard way. Rivers that flood without warning, slopes that give way under weight, forests that punish the careless. When the Council steps into the wilds, they do so already knowing where to place their feet.",
       },
-      position: { x: 50, y: 1250 },
+      position: { x: 100, y: 1250 },
     },
     {
       id: "border-wards",
@@ -330,7 +330,7 @@ export const initialData = {
         flavor:
           "The wardens teach more than routes. They teach what bent grass means, how stone remembers weight, and which silences are wrong. By the time the Council sets out, the land itself has begun to speak in patterns they recognize. When the moment comes, they do not guess or search. They simply know where to go.",
       },
-      position: { x: 350, y: 1250 },
+      position: { x: 400, y: 1250 },
     },
     {
       id: "sacred-groves",
@@ -345,7 +345,7 @@ export const initialData = {
         flavor:
           "Protected clearings are established, places where harvesting happens at the right hour, with the right words spoken. The Den adds drying frames, resin presses, and sealed jars stamped with Warden marks. Reagents arrive ‘alive’ with power, fit for spells that demand something rarer than coin.",
       },
-      position: { x: 650, y: 1250 },
+      position: { x: 700, y: 1250 },
     },
     {
       id: "primal-guardians",
@@ -360,7 +360,7 @@ export const initialData = {
         flavor:
           "With Nexus projection available, the Wardens can carry their calls beyond the local woods, and pacts become portable. The Den keeps etched talismans and binding cords ready for the Council’s use. When invoked, the answer feels ancient and practical: the land itself stepping in as an ally.",
       },
-      position: { x: 950, y: 1250 },
+      position: { x: 1000, y: 1250 },
     },
 
     {
@@ -376,7 +376,7 @@ export const initialData = {
         flavor:
           "Ledgers are unified, exemptions reviewed, and informal arrangements brought into the open. The changes are not popular, but they are effective. Coin that once slipped through cracks now finds its way back into the city’s vaults, giving Andrios a steadier pulse and a future that can finally be planned around.",
       },
-      position: { x: 50, y: 1500 },
+      position: { x: 100, y: 1500 },
     },
     {
       id: "investment-charters",
@@ -391,7 +391,7 @@ export const initialData = {
         flavor:
           "Charters are issued with your seal, credit backed by the city and the Council’s reputation. Tradesfolk start accepting ‘Council paper’ as readily as coin, because they know it gets honored. This is how preparations happen even when you didn’t have time to make them first.",
       },
-      position: { x: 350, y: 1500 },
+      position: { x: 400, y: 1500 },
     },
     {
       id: "trade-monopolies",
@@ -406,7 +406,7 @@ export const initialData = {
         flavor:
           "Exclusive rights are negotiated: priority routes, reserved stock, and ‘first refusal’ agreements that other buyers can’t touch. The Commerce Council keeps a registry of controlled goods and who owes the Council favors. When you need something difficult, the city doesn’t search. It claims.",
       },
-      position: { x: 650, y: 1500 },
+      position: { x: 700, y: 1500 },
     },
     {
       id: "economic-leverage",
@@ -421,7 +421,7 @@ export const initialData = {
         flavor:
           "At a certain scale, wealth stops being counted and starts being felt. Trade routes tighten, credit dries up, and promises quietly expire. Andrios does not need to threaten. The cost of standing against it simply becomes too high to ignore.",
       },
-      position: { x: 950, y: 1500 },
+      position: { x: 1000, y: 1500 },
     },
 
     {
@@ -437,7 +437,7 @@ export const initialData = {
         flavor:
           "Songs travel faster than caravans. Stories are repeated, embellished, argued over. By the time the Council arrives, they are rarely strangers. Some have heard of their deeds, others of their failures, but few meet them without expectation. Words land differently when the listener believes they are speaking to someone who matters.",
       },
-      position: { x: 50, y: 1750 },
+      position: { x: 100, y: 1750 },
     },
     {
       id: "relic-exhibition",
@@ -452,7 +452,7 @@ export const initialData = {
         flavor:
           "Some artifacts are dangerous not because of what they do, but because of what they mean. Within the Exhibition, objects are studied alongside the stories that surround them. The Council does not merely learn how such things function, but how they have shaped the world before, and what price others paid for wielding them unwisely.",
       },
-      position: { x: 350, y: 1750 },
+      position: { x: 400, y: 1750 },
     },
     {
       id: "cultural-prestige",
@@ -467,7 +467,7 @@ export const initialData = {
         flavor:
           "Through patronage, performance, and careful repetition, the Council’s name becomes tied to certain truths. When questions arise in those domains, people look to the Council not for permission, but for answers. Authority settles quietly, until one day it is simply assumed.",
       },
-      position: { x: 650, y: 1750 },
+      position: { x: 700, y: 1750 },
     },
     {
       id: "myth-archive",
@@ -482,7 +482,7 @@ export const initialData = {
         flavor:
           "Faith does not collapse all at once. It erodes, redirects, and reshapes itself through repetition, omission, and carefully chosen examples. Songs change. Festivals shift their focus. Teachings are amended. When the Council of Culture enacts a doctrinal shift, belief itself moves, and even the gods feel the ground give way beneath them.",
       },
-      position: { x: 950, y: 1750 },
+      position: { x: 1000, y: 1750 },
     },
 
     {
@@ -497,7 +497,7 @@ export const initialData = {
         flavor:
           "The Education Council funds dedicated inquiry: scribes, assistants, and time carved out for real investigation. Questions stop languishing in taverns and start landing on desks with deadlines. You feel the difference in the answers: fewer guesses, more citations, more actionable insight.",
       },
-      position: { x: 50, y: 2000 },
+      position: { x: 100, y: 2000 },
     },
     {
       id: "scholarly-orders",
@@ -512,7 +512,7 @@ export const initialData = {
         flavor:
           "Knowledge at this level is not casual. It requires tutors, texts, examinations, and time. Each investment by the Council reshapes its focus, directing scholars and instructors toward a single discipline until mastery is achieved. Such dedication cannot be spread thin—when priorities change, so too does the curriculum.",
       },
-      position: { x: 350, y: 2000 },
+      position: { x: 400, y: 2000 },
     },
     {
       id: "arcane-curriculum",
@@ -527,7 +527,7 @@ export const initialData = {
         flavor:
           "Magic in Andrios is no longer passed down by instinct or guarded tradition. Through the Arcane Curriculum, spellwork is formalized, practiced, and taught with discipline. Rituals are studied as structured procedures rather than personal secrets, allowing even complex magic to be performed through preparation and patience rather than haste.",
       },
-      position: { x: 650, y: 2000 },
+      position: { x: 700, y: 2000 },
     },
 
     {
@@ -543,7 +543,7 @@ export const initialData = {
         flavor:
           "The small house is refitted into an official embassy with Setessan banners, a sealed archive, and a receiving room that follows protocol to the letter. Courtesies become predictable, and that predictability builds trust. Deals feel less like favors and more like policy.",
       },
-      position: { x: 50, y: 2250 },
+      position: { x: 100, y: 2250 },
     },
     {
       id: "diplomatic-staff",
@@ -558,7 +558,7 @@ export const initialData = {
         flavor:
           "An envoy team arrives: scribes, translators, quiet messengers, and a senior aide who ‘knows everyone.’ They keep schedules, record debts, and track who is drifting toward conflict. Information begins arriving like mail, not like rumor.",
       },
-      position: { x: 350, y: 2250 },
+      position: { x: 400, y: 2250 },
     },
     {
       id: "treaty-chambers",
@@ -572,7 +572,7 @@ export const initialData = {
         flavor:
           "A purpose-built chamber is added with neutral seating, oath-binding language, and ritual courtesies designed to lower weapons. The space is engineered for conversation to happen even when everyone arrived ready to fight. It’s not magic; it’s structure that makes violence… inconvenient.",
       },
-      position: { x: 650, y: 2250 },
+      position: { x: 700, y: 2250 },
     },
     {
       id: "regional-accords",
@@ -587,7 +587,7 @@ export const initialData = {
         flavor:
           "At this stage, the Embassy no longer negotiates outcomes—it defines boundaries. Accords drafted in Andrios carry recognition, expectation, and consequence. When the Council invokes such an agreement, conflict does not end, but it changes shape, constrained by terms the world understands it cannot ignore without cost.",
       },
-      position: { x: 950, y: 2250 },
+      position: { x: 1000, y: 2250 },
     },
 
     {
@@ -603,7 +603,7 @@ export const initialData = {
         flavor:
           "By funding surveyors and demanding reports, the Council ensures that no expedition begins blind. Chalk marks, partial maps, and hard-earned notes turn unknown entrances into informed approaches.",
       },
-      position: { x: 50, y: 2500 },
+      position: { x: 100, y: 2500 },
     },
     {
       id: "survey-teams",
@@ -618,7 +618,7 @@ export const initialData = {
         flavor:
           "The Council’s influence turns temporary camps into planned footholds. Supplies are cached, escape routes cleared, and signals agreed upon long before steel is drawn.",
       },
-      position: { x: 350, y: 2500 },
+      position: { x: 400, y: 2500 },
     },
     {
       id: "deep-expeditions",
@@ -633,7 +633,7 @@ export const initialData = {
         flavor:
           "With coin and authority, the Council pushes the Lodge beyond caution. These forays do not conquer the depths—but they leave scars, spent traps, and disrupted defenses for those who follow.",
       },
-      position: { x: 650, y: 2500 },
+      position: { x: 700, y: 2500 },
     },
     {
       id: "relic-logistics",
@@ -648,7 +648,7 @@ export const initialData = {
         flavor:
           "Some ruins were never meant to be entered lightly. Through loss, study, and persistence, the Lodge finally learns where these places lie—and how they may be opened. They do not descend. They mark the breach, withdraw, and wait. What lies beyond is not salvage. It is a trial meant for those who rule.",
       },
-      position: { x: 950, y: 2500 },
+      position: { x: 1000, y: 2500 },
     },
 
     {
@@ -663,7 +663,7 @@ export const initialData = {
         flavor:
           "Timber pilings go in, cranes appear, and the riverfront transforms into a working spine for the city. Traders schedule arrivals, cargo gets tallied, and money starts circulating faster. The Port doesn’t just add ships. It multiplies everything connected to trade.",
       },
-      position: { x: 50, y: 2750 },
+      position: { x: 100, y: 2750 },
     },
     {
       id: "port-authority",
@@ -678,7 +678,7 @@ export const initialData = {
         flavor:
           "A formal authority is installed: clerks, inspectors, manifests, and a small office where stamps decide a cargo’s fate. Delays become deliberate, and speed becomes purchasable. When you need something moved (or stopped), the Port can do it with a signature.",
       },
-      position: { x: 350, y: 2750 },
+      position: { x: 400, y: 2750 },
     },
     {
       id: "shipyards",
@@ -693,7 +693,7 @@ export const initialData = {
         flavor:
           "The shipyards of Andrios no longer build vessels in isolation. Hulls are laid with purpose, crews trained for doctrine, and routes planned before keels touch water. When the Council needs the sea to open (or to close) it does.",
       },
-      position: { x: 650, y: 2750 },
+      position: { x: 700, y: 2750 },
     },
     {
       id: "trade-fleets",
@@ -708,7 +708,7 @@ export const initialData = {
         flavor:
           "With arcane power distributed at scale, hulls no longer cling to the water. Trade ships rise into the sky, bearing cargo, soldiers, and authority alike. Routes once measured in weeks are redrawn overnight, and no harbor wall or hostile fleet can bar passage unless it can challenge Andrios in the air.",
       },
-      position: { x: 950, y: 2750 },
+      position: { x: 1000, y: 2750 },
     },
 
     {
@@ -723,7 +723,7 @@ export const initialData = {
         flavor:
           "A dedicated structure rises with stonework cut to arcane tolerances, with channels designed to hold power without cracking. It’s inert at first, like a forge before the fire. But it makes one thing possible: magic as infrastructure, not improvisation.",
       },
-      position: { x: 50, y: 3000 },
+      position: { x: 100, y: 3000 },
     },
     {
       id: "conduit-arrays",
@@ -738,7 +738,7 @@ export const initialData = {
         flavor:
           "The Nexus no longer merely stores power—it distributes it defensively. Conduit Arrays lace the city with overlapping wards and stabilizers, turning Andrios into a single, shielded arcane structure. Spells falter, intrusions strain, and hostile forces discover that reaching the city now requires far more than intent.",
       },
-      position: { x: 350, y: 3000 },
+      position: { x: 400, y: 3000 },
     },
     {
       id: "power-regulation",
@@ -753,7 +753,7 @@ export const initialData = {
         flavor:
           "Control systems follow: dampeners, valves, measured outputs, and safety protocols written like engineering specs. The difference is felt immediately: power stops spiking and starts obeying. When you push a spell or item beyond its normal limits, it’s a calculated surge, not a gamble.",
       },
-      position: { x: 650, y: 3000 },
+      position: { x: 700, y: 3000 },
     },
     {
       id: "arcane-distribution",
@@ -768,7 +768,7 @@ export const initialData = {
         flavor:
           "Anchors and relay sigils are established beyond the building, quiet marks in stone, metal, and carved wood that let power travel. The city gains invisible lines of reach. Nexus-backed support becomes something you can access on the road, in a ruin, or in the middle of a crisis.",
       },
-      position: { x: 950, y: 3000 },
+      position: { x: 1000, y: 3000 },
     },
     {
       id: "teleportation-gate",
@@ -783,7 +783,7 @@ export const initialData = {
         flavor:
           "The Nexus reaches beyond distance and geography. Leylines fold, space yields, and Andrios becomes a fixed point in the world’s fabric. From this moment on, distance is no longer a barrier—it is a choice.",
       },
-      position: { x: 1250, y: 3000 },
+      position: { x: 1300, y: 3000 },
     },
     {
       id: "ascendant-andrios",
@@ -798,7 +798,7 @@ export const initialData = {
         flavor:
           "The ground releases its hold on Andrios. Streets lift, towers realign, and the city rises as a single, deliberate act of will. No longer bound to borders or geography, Andrios becomes a moving axis of power—arriving not as an army, but as inevitability.",
       },
-      position: { x: 1550, y: 3000 },
+      position: { x: 1600, y: 3000 },
     },
   ],
   edges: [
