@@ -103,6 +103,12 @@ body {
   padding-bottom: 12px;
 }
 
+.vault-section {
+  padding-bottom: 14px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #333;
+}
+
 .income-label {
   font-size: 10px;
   font-weight: 600;

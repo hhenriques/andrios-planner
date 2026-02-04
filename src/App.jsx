@@ -147,6 +147,8 @@ const SIDEBAR_WIDTH = 180;
 
 // Base town income
 const BASE_INCOME = 150;
+// Edit this in code to change the displayed vault value
+const VAULT = "350 pp";
 
 // Process nodes to center them vertically in their lanes
 const centeredNodes = initialData.nodes.map((node) => ({
@@ -478,6 +480,10 @@ function Flow() {
 
         {/* Income & Abilities Box */}
         <div className="income-box">
+          <div className="income-section vault-section">
+            <div className="income-label">Vault</div>
+            <div className="income-value">{VAULT}</div>
+          </div>
           <div className="income-section">
             <div className="income-label">Town Income</div>
             <div className="income-value">{incomeData.current} pp/week</div>
