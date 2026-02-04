@@ -18,7 +18,14 @@ const CustomNode = ({ data }) => {
     isDependencyHighlighted,
     isDependantHighlighted,
     isSelected,
+    dependencies,
+    unlocks,
   } = data;
+  
+  // Hide left handle for nodes with no dependencies (first in row)
+  const hasInputs = dependencies && dependencies.length > 0;
+  // Hide right handle for nodes that don't unlock anything (terminal nodes)
+  const hasOutputs = unlocks && unlocks.length > 0;
   
   // Node is locked if not purchased and dependencies aren't met
   const isLocked = !purchased && !canPurchase;
@@ -71,16 +78,18 @@ const CustomNode = ({ data }) => {
         opacity: purchased ? 0.85 : isLocked ? 0.5 : 1,
       }}
     >
-      {/* Inputs handle */}
-      <Handle
-        type="target"
-        position={Position.Left}
-        style={{
-          background: purchased ? "#4caf50" : isLocked ? "#444" : "#777",
-          width: "8px",
-          height: "8px",
-        }}
-      />
+      {/* Inputs handle - only show if node has dependencies */}
+      {hasInputs && (
+        <Handle
+          type="target"
+          position={Position.Left}
+          style={{
+            background: purchased ? "#4caf50" : isLocked ? "#444" : "#777",
+            width: "8px",
+            height: "8px",
+          }}
+        />
+      )}
 
       <div
         style={{
@@ -198,16 +207,18 @@ const CustomNode = ({ data }) => {
         </div>
       )}
 
-      {/* Output handle */}
-      <Handle
-        type="source"
-        position={Position.Right}
-        style={{
-          background: purchased ? "#4caf50" : isLocked ? "#444" : "#777",
-          width: "8px",
-          height: "8px",
-        }}
-      />
+      {/* Output handle - only show if node unlocks other nodes */}
+      {hasOutputs && (
+        <Handle
+          type="source"
+          position={Position.Right}
+          style={{
+            background: purchased ? "#4caf50" : isLocked ? "#444" : "#777",
+            width: "8px",
+            height: "8px",
+          }}
+        />
+      )}
     </div>
   );
 };

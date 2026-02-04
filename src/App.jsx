@@ -253,6 +253,7 @@ function Flow() {
           purchased: purchasedNodes.has(node.id),
           canPurchase: canPurchaseNode(node.id, purchasedNodes),
           dependencies: dependencyMap.get(node.id) || [],
+          unlocks: unlocksMap.get(node.id) || [],
           onTogglePurchased: () => togglePurchased(node.id),
           // Highlighting state for dependency visualization
           isDependencyHighlighted: highlightedNodes.dependencies.has(node.id),
