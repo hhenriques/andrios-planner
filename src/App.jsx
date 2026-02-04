@@ -136,8 +136,8 @@ const laneLabels = buildings.map((b) => {
   return { name: b, y: node.position.y };
 });
 
-// Row height matches Y spacing in data (200px between each building row)
-const ROW_HEIGHT = 200;
+// Row height matches Y spacing in data (250px between each building row)
+const ROW_HEIGHT = 250;
 // Estimated node card height for vertical centering
 const NODE_HEIGHT = 100;
 // Offset to center nodes vertically in their lane
