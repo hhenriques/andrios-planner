@@ -118,6 +118,102 @@ body {
   margin-bottom: 4px;
 }
 
+.income-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.income-label-row .income-label {
+  margin-bottom: 0;
+}
+
+.vault-edit-button {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #555;
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.vault-edit-button:hover {
+  background: #333;
+  border-color: #555;
+  color: #aaa;
+}
+
+.vault-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vault-edit-input {
+  flex: 1;
+  padding: 4px 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffcd3c;
+  background: #222;
+  border: 1px solid #444;
+  border-radius: 4px;
+  outline: none;
+  min-width: 0;
+}
+
+.vault-edit-input:focus {
+  border-color: #ffcd3c;
+}
+
+.vault-edit-suffix {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffcd3c;
+}
+
+.vault-save-button,
+.vault-cancel-button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.vault-save-button {
+  background: #2e7d32;
+  color: #fff;
+}
+
+.vault-save-button:hover {
+  background: #388e3c;
+}
+
+.vault-cancel-button {
+  background: #555;
+  color: #aaa;
+}
+
+.vault-cancel-button:hover {
+  background: #666;
+  color: #fff;
+}
+
 .income-value {
   font-size: 20px;
   font-weight: 700;

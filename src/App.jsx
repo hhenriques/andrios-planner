@@ -22,6 +22,7 @@ const nodeTypes = { custom: CustomNode };
 // LocalStorage keys for persisting data
 const PURCHASED_NODES_KEY = "andrios-planner-purchased-nodes";
 const USED_ABILITIES_KEY = "andrios-planner-used-abilities";
+const VAULT_KEY = "andrios-planner-vault";
 
 // Load purchased nodes from localStorage
 const loadPurchasedNodes = () => {
@@ -68,6 +69,28 @@ const saveUsedAbilities = (usedSet) => {
     localStorage.setItem(USED_ABILITIES_KEY, JSON.stringify(array));
   } catch (error) {
     console.error("Error saving used abilities to localStorage:", error);
+  }
+};
+
+// Load vault value from localStorage (stores just the number)
+const loadVault = () => {
+  try {
+    const saved = localStorage.getItem(VAULT_KEY);
+    if (saved) {
+      return saved;
+    }
+  } catch (error) {
+    console.error("Error loading vault from localStorage:", error);
+  }
+  return "350";
+};
+
+// Save vault value to localStorage
+const saveVault = (value) => {
+  try {
+    localStorage.setItem(VAULT_KEY, value);
+  } catch (error) {
+    console.error("Error saving vault to localStorage:", error);
   }
 };
 
@@ -147,8 +170,6 @@ const SIDEBAR_WIDTH = 180;
 
 // Base town income
 const BASE_INCOME = 150;
-// Edit this in code to change the displayed vault value
-const VAULT = "350 pp";
 
 // Process nodes to center them vertically in their lanes
 const centeredNodes = initialData.nodes.map((node) => ({
@@ -202,6 +223,11 @@ function Flow() {
   
   // Track which abilities have been used this arc
   const [usedAbilities, setUsedAbilities] = useState(() => loadUsedAbilities());
+  
+  // Vault value state with editing
+  const [vault, setVault] = useState(() => loadVault());
+  const [isEditingVault, setIsEditingVault] = useState(false);
+  const [vaultEditValue, setVaultEditValue] = useState("");
 
   // Save purchased nodes to localStorage whenever they change
   useEffect(() => {
@@ -212,6 +238,11 @@ function Flow() {
   useEffect(() => {
     saveUsedAbilities(usedAbilities);
   }, [usedAbilities]);
+  
+  // Save vault to localStorage whenever it changes
+  useEffect(() => {
+    saveVault(vault);
+  }, [vault]);
   
   // Toggle used state for an ability
   const toggleAbilityUsed = useCallback((nodeId) => {
@@ -530,8 +561,58 @@ function Flow() {
         {/* Income & Abilities Box */}
         <div className="income-box">
           <div className="income-section vault-section">
-            <div className="income-label">Vault</div>
-            <div className="income-value">{VAULT}</div>
+            <div className="income-label-row">
+              <div className="income-label">Vault</div>
+              {!isEditingVault && (
+                <button 
+                  className="vault-edit-button"
+                  onClick={() => {
+                    setVaultEditValue(vault);
+                    setIsEditingVault(true);
+                  }}
+                  title="Edit vault value"
+                >
+                  ✎
+                </button>
+              )}
+            </div>
+            {isEditingVault ? (
+              <div className="vault-edit-row">
+                <input
+                  type="text"
+                  className="vault-edit-input"
+                  value={vaultEditValue}
+                  onChange={(e) => setVaultEditValue(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setVault(vaultEditValue);
+                      setIsEditingVault(false);
+                    } else if (e.key === "Escape") {
+                      setIsEditingVault(false);
+                    }
+                  }}
+                  autoFocus
+                />
+                <span className="vault-edit-suffix">pp</span>
+                <button 
+                  className="vault-save-button"
+                  onClick={() => {
+                    setVault(vaultEditValue);
+                    setIsEditingVault(false);
+                  }}
+                >
+                  ✓
+                </button>
+                <button 
+                  className="vault-cancel-button"
+                  onClick={() => setIsEditingVault(false)}
+                >
+                  ✕
+                </button>
+              </div>
+            ) : (
+              <div className="income-value">{vault} pp</div>
+            )}
           </div>
           <div className="income-section">
             <div className="income-label">Town Income</div>
